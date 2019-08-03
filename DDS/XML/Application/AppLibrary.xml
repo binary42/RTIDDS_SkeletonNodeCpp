@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../Schema/rti_dds_profiles.xsd" version="5.1.0">
+
+	<!-- ////////////// -->
+	<!-- Domain Library -->
+
+	<domain_library name="ExampleDomainLibrary">
+		
+		<domain name="ExampleDomain" domain_id="1">
+			
+			<!-- /////////////////// -->
+			<!-- Type Registratrions -->
+			
+			<!-- Sensors.idl -->
+			<register_type name="TDistance" kind="userGenerated"/>
+			<register_type name="TTemperature" kind="userGenerated"/>
+			
+			<!-- Controls.idl -->
+			<register_type name="TControlState" kind="userGenerated" />
+			
+			<!-- //////////////////// -->
+			<!-- Topics -->
+			
+			<topic name="ForwardDistance" register_type_ref="TDistance"/>		
+			<topic name="InternalTemperature" register_type_ref="TTemperature"/>
+			
+			<topic name="ControlStateRequested" register_type_ref="TControlState"/>
+			<topic name="ControlStateCurrent" register_type_ref="TControlState"/>
+			
+		</domain>
+		
+	</domain_library>
+	
+	<!-- /////////////////// -->
+	<!-- Participant Library -->
+	
+	<participant_library name="ExampleParticipantLibrary">
+		
+		<!-- ////////////////////////////////////////// -->
+		<!-- SensorPublisher - Publishes sensor updates -->
+		<domain_participant name="SensorPublisher" domain_ref="ExampleDomainLibrary::ExampleDomain">
+			
+			<!-- Participant QOS -->
+			<participant_qos base_name="RTIUserQosLib::User.Generic.Common" />
+			
+			<publisher name="MyPublisher">
+			
+				<publisher_qos base_name="RTIUserQosLib::User.Generic.Common" />
+				
+				<!-- Data writers -->
+				<data_writer name="ForwardDistanceWriter" topic_ref="ForwardDistance">
+					<datawriter_qos base_name="RTIUserQosLib::User.Pattern.LastValueCache" />
+				</data_writer>
+				
+				<data_writer name="InternalTemperatureWriter" topic_ref="InternalTemperature">
+					<datawriter_qos base_name="RTIUserQosLib::User.Pattern.LastValueCache" />
+				</data_writer>
+				
+			</publisher>
+			
+		</domain_participant>
+		
+		<!-- ////////////////////////////////////////////////////////////////////////////////// -->
+		<!-- ControlInterface - Listens to sensor data and responds to control command requests -->
+		<domain_participant name="ControlInterface" domain_ref="ExampleDomainLibrary::ExampleDomain">
+			
+			<!-- Participant QOS -->
+			<participant_qos base_name="RTIUserQosLib::User.Generic.Common" />
+			
+			<publisher name="MyPublisher">
+			
+				<publisher_qos base_name="RTIUserQosLib::User.Generic.Common" />
+				
+				<!-- Data writers -->
+				<data_writer name="ControlStateCurrentWriter" topic_ref="ControlStateCurrent">
+					<datawriter_qos base_name="RTIUserQosLib::User.Pattern.LastValueCache" />
+				</data_writer>
+				
+			</publisher>
+			
+			<subscriber name="MySubscriber">
+			
+				<subscriber_qos base_name="RTIUserQosLib::User.Generic.Common" />
+				
+				<!-- Data readers -->
+				<data_reader name="ForwardDistanceReader" topic_ref="ForwardDistance">
+					<datareader_qos base_name="RTIUserQosLib::User.Pattern.LastValueCache" />
+				</data_reader>
+				
+				<data_reader name="InternalTemperatureReader" topic_ref="InternalTemperature">
+					<datareader_qos base_name="RTIUserQosLib::User.Pattern.LastValueCache" />
+				</data_reader>
+				
+				<data_reader name="ControlStateRequestedReader" topic_ref="ControlStateRequested">
+					<datareader_qos base_name="RTIUserQosLib::User.Pattern.LastValueCache" />
+				</data_reader>
+				
+			</subscriber>
+			
+		</domain_participant>
+		
+		<!-- //////////////////////////////////////////////////////////////////// -->
+		<!-- Console - Program that allows user to issue control command requests -->
+		<domain_participant name="Console" domain_ref="ExampleDomainLibrary::ExampleDomain">
+			
+			<!-- Participant QOS -->
+			<participant_qos base_name="RTIUserQosLib::User.Generic.Common" />
+			
+			<publisher name="MyPublisher">
+			
+				<publisher_qos base_name="RTIUserQosLib::User.Generic.Common" />
+				
+				<!-- Data writers -->
+				<data_writer name="ControlStateRequestedWriter" topic_ref="ControlStateRequested">
+					<datawriter_qos base_name="RTIUserQosLib::User.Pattern.LastValueCache" />
+				</data_writer>
+				
+			</publisher>
+			
+			<subscriber name="MySubscriber">
+			
+				<subscriber_qos base_name="RTIUserQosLib::User.Generic.Common" />
+				
+				<!-- Data readers -->			
+				<data_reader name="ControlStateCurrentReader" topic_ref="ControlStateCurrent">
+					<datareader_qos base_name="RTIUserQosLib::User.Pattern.LastValueCache" />
+				</data_reader>
+				
+			</subscriber>
+			
+		</domain_participant>
+		
+	</participant_library>
+	
+</dds>

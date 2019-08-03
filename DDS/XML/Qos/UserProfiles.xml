@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../Schema/rti_dds_profiles.xsd" version="5.1.0">
+
+	<!-- User QOS Library -->
+	<qos_library name="CustomQosLib">
+	</qos_library>
+
+</dds>

@@ -1,0 +1,1051 @@
+<!-- 
+RTI Connext DDS Builtin QoS Profiles
+
+This file is provided for reference only and should not be modified. The 
+profiles in this file are built-in into the Connext Core libraries and can be
+referred to in the APIs by their library names and profile names. You can also
+use the constants documented under Modules/Infrastructure/Builtin QoS Profiles 
+in the online html documentation.
+
+If you wish to modify any of the values in this file, the recommendation is to
+create a profile of your own and inherit from this one. The 
+NDDS_QOS_PROFILES.example.xml file (contained in the same directory as 
+this file) shows how to inherit from the built-in profiles. 
+
+For Example: 
+<qos_library name="MyLibrary">
+  <qos_profile name="MyProfile" base_name="BuiltinQosLibExp::Generic.StrictReliable">
+    ... Change/add Qos settings here ...
+  </qos_profile>
+</qos_library>
+
+This file contains:
+
+Libraries:
+
+* BuiltinQosLib: A library containing non-experimental built-in profiles. 
+
+* BuiltinQosLibExp: A library containing experimental profiles. Experimental
+profiles are new profiles that have been tested internally but have not gone
+through an extensive validation period. Therefore, some of the settings may
+change in future releases based on customer and internal feedback. After
+validation, experimental profiles will be moved into the non-experimental 
+library.
+
+Profiles:
+
+There are 3 types of profiles: 
+
+* Baseline.X.X.X profiles represent the QoS defaults for 
+Connext DDS X.X.X. The defaults for the latest Connext DDS version can be 
+accessed using the BuiltinQosLib::Baseline profile
+
+* Generic.X profiles are horizontal profiles that allow you to easily configure
+different features and communication use cases with Connext DDS. For example,
+there is a Generic.StrictReliable that you can use when your application has a 
+requirement for no data loss, regardless of the application domain.
+
+* Pattern.X profiles inherit from Generic.X profiles and are vertical profiles
+that allow you to configure various domain-specific communication use cases.
+For example, there is a Pattern.Alarm profile that can be used to manage the
+generation and consumption of alarm events.
+
+-->
+<dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="../Schema/rti_dds_profiles.xsd" version="5.1.0">
+  <!-- Qos Library -->
+  <qos_library name="BuiltinQosLib">
+
+    <!-- The QoS default values for version 5.0.0 -->
+    <qos_profile name="Baseline.5.0.0" base_name="Baseline.Root"/>
+
+    <!-- The QoS default values for version 5.1.0 -->
+    <qos_profile name="Baseline.5.1.0" base_name="Baseline.5.0.0">
+      <participant_qos>
+        <discovery_config>
+          <default_domain_announcement_period>
+            <sec>30</sec>
+            <nanosec>DURATION_ZERO_NSEC</nanosec>
+          </default_domain_announcement_period>
+          <ignore_default_domain_announcements>true</ignore_default_domain_announcements>
+        </discovery_config>
+        <property>
+          <value>
+            <element>
+              <name>dds.transport.UDPv4.builtin.parent.message_size_max</name>
+              <value>65507</value>
+              <propagate>false</propagate>
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.send_socket_buffer_size</name>
+              <value>131072</value>
+              <propagate>false</propagate>
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.recv_socket_buffer_size</name>
+              <value>131072</value>
+              <propagate>false</propagate>
+            </element>
+            <!-- public_address is a new property necessary to support 
+                 communication over WAN that involves Network Address 
+                 Translation (NAT). Its default value is NULL
+            <element>
+              <name>dds.transport.UDPv4.builtin.public_address</name>
+              <value/>
+            </element> -->
+            <element>
+              <name>dds.transport.UDPv6.builtin.parent.message_size_max</name>
+              <value>65507</value>
+              <propagate>false</propagate>
+            </element>
+            <element>
+              <name>dds.transport.UDPv6.builtin.send_socket_buffer_size</name>
+              <value>131072</value>
+              <propagate>false</propagate>
+            </element>
+            <element>
+              <name>dds.transport.UDPv6.builtin.recv_socket_buffer_size</name>
+              <value>131072</value>
+              <propagate>false</propagate>
+            </element>
+            <element>
+              <name>dds.transport.shmem.builtin.parent.message_size_max</name>
+              <value>65536</value>
+              <propagate>false</propagate>
+            </element>
+            <element>
+              <name>dds.transport.shmem.builtin.receive_buffer_size</name>
+              <value>1048576</value>
+              <propagate>false</propagate>
+            </element>
+            <element>
+              <name>dds.transport.shmem.builtin.received_message_count_max</name>
+              <value>64</value>
+              <propagate>false</propagate>
+            </element>
+          </value>
+        </property>
+        <participant_name>
+          <name xsi:nil="true"/>
+        </participant_name>
+        <receiver_pool>
+          <buffer_size>LENGTH_AUTO</buffer_size>
+        </receiver_pool>
+        <resource_limits>
+          <participant_property_string_max_length>2048</participant_property_string_max_length>
+          <transport_info_list_max_length>12</transport_info_list_max_length>
+        </resource_limits>
+        <type_support>
+          <cdr_padding_kind>AUTO_CDR_PADDING</cdr_padding_kind>
+        </type_support>
+      </participant_qos>
+
+      <publisher_qos>
+        <publisher_name>
+          <name xsi:nil="true"/>
+        </publisher_name>
+      </publisher_qos>
+
+      <subscriber_qos>
+        <subscriber_name>
+          <name xsi:nil="true"/>
+        </subscriber_name>
+      </subscriber_qos>
+
+      <datawriter_qos>
+        <type_support>
+          <cdr_padding_kind>AUTO_CDR_PADDING</cdr_padding_kind>
+        </type_support>
+      </datawriter_qos>
+
+      <datareader_qos>
+        <type_support>
+          <cdr_padding_kind>AUTO_CDR_PADDING</cdr_padding_kind>
+        </type_support>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- The most up-to-date QoS default values. This profile can be used
+         if you would like your application to pick up and use any new QoS 
+         default settings each time a new Connext DDS version is released
+         without changing your application code. -->
+    <qos_profile name="Baseline" base_name="Baseline.5.1.0"/>
+
+    <!-- A common Participant base profile from which all Generic.X and
+         Pattern.X profiles will inherit -->
+    <qos_profile name="Generic.Common" base_name="Baseline" >
+      <participant_qos>
+        <resource_limits>
+          <participant_property_string_max_length>4096</participant_property_string_max_length>
+          <participant_property_list_max_length>45</participant_property_list_max_length>
+          <type_object_max_serialized_length>8192</type_object_max_serialized_length>
+        </resource_limits>
+      </participant_qos>
+    </qos_profile>
+
+    <!-- Enables RTI Monitoring Library using the Baseline QoS defaults. You 
+         can use this profile to override the Participant configuration to use
+         monitoring when inheriting profiles. For example:
+          
+         <qos_profile name="MyProfile" base_name="BuiltinQosLibExp::Generic.StrictReliable">
+             <participant_qos base_name="BuiltinQosLib::Generic.Monitoring.Common">
+         </qos_profile>
+    -->
+    <qos_profile name="Generic.Monitoring.Common" base_name="Baseline">
+      <participant_qos>
+        <resource_limits>
+            <participant_property_string_max_length>4096</participant_property_string_max_length>
+            <participant_property_list_max_length>45</participant_property_list_max_length>
+            <!-- Some of the monitoring topics have large type objects -->
+            <type_object_max_serialized_length>35840</type_object_max_serialized_length>
+        </resource_limits>
+        <property>
+          <value>
+            <!-- Monitoring can be enabled via XML with dynamic linking. If you
+                 have a C or C++ application that is statically linked, please 
+                 refer to the RTI Monitoring Library Getting Started Guide for 
+                 instructions on how to enable monitoring.-->
+            <element>
+              <name>rti.monitor.library</name>
+              <value>rtimonitoring</value>
+            </element>
+            <element>
+              <name>rti.monitor.create_function</name>
+              <value>RTIDefaultMonitor_create</value>
+            </element>
+            <element>
+              <name>rti.monitor.config.writer_pool_buffer_max_size</name>
+              <value>4096</value>
+            </element>
+          </value>
+        </property>
+      </participant_qos>
+    </qos_profile>
+
+    <!-- RTI Connext Micro only supports MANUAL_BY_TOPIC LivelinessQosPolicy kind. In
+         order to be compatible with Connext DDS, the DataReader and DataWriter
+         must have their liveliness kind changed to this value because the default 
+         kind in Connext DDS is AUTOMATIC -->
+    <qos_profile name="Generic.ConnextMicroCompatibility" base_name="Baseline">
+      <datareader_qos>
+        <liveliness>
+          <kind>MANUAL_BY_TOPIC_LIVELINESS_QOS</kind>
+        </liveliness>
+      </datareader_qos>
+
+      <datawriter_qos>
+        <liveliness>
+          <kind>MANUAL_BY_TOPIC_LIVELINESS_QOS</kind>
+        </liveliness>
+      </datawriter_qos>
+
+      <participant_qos>
+        <!-- Disable the built-in shared memory transport -->
+        <transport_builtin>
+          <mask>UDPv4</mask>
+        </transport_builtin>
+      </participant_qos>
+    </qos_profile>
+
+    <!-- This profiles allows RTI Connext DDS to interoperate with other DDS 
+         vendors -->
+    <qos_profile name="Generic.OtherDDSVendorCompatibility" base_name="Baseline">
+      <participant_qos>
+        <!-- Disable the built-in shared memory transport -->
+        <transport_builtin>
+          <mask>UDPv4</mask>
+        </transport_builtin>
+        <!-- Don't send the domain announcement message -->
+        <discovery_config>
+          <default_domain_announcement_period>
+            <sec>DURATION_INFINITE_SEC</sec>
+            <nanosec>DURATION_INFINITE_NSEC</nanosec>
+          </default_domain_announcement_period>
+        </discovery_config>
+      </participant_qos>
+    </qos_profile>
+
+  </qos_library>
+
+  <!-- Library for Experimental Profiles -->
+  <qos_library name="BuiltinQosLibExp">
+
+    <!-- This profile guarantees delivery of every published sample. 
+         Samples will not be overwritten, regardless of HistoryQosPolicy's depth. 
+         Strict reliability ensures in-order delivery and retransmission of 
+         lost samples. -->
+    <qos_profile name="Generic.StrictReliable" base_name="BuiltinQosLib::Generic.Common">
+      <datawriter_qos>
+        <reliability>
+          <kind>RELIABLE_RELIABILITY_QOS</kind>
+          <max_blocking_time>
+            <sec>5</sec>
+            <nanosec>0</nanosec>
+          </max_blocking_time>
+        </reliability>
+        <history>
+          <kind>KEEP_ALL_HISTORY_QOS</kind>
+        </history>
+        <protocol>
+          <rtps_reliable_writer>
+            <!-- All write() calls will block (for at most 
+                 max_blocking_time) if there are 40 unacknowledged
+                 samples in the writer queue -->
+            <max_send_window_size>40</max_send_window_size>
+            <min_send_window_size>40</min_send_window_size>
+            <heartbeats_per_max_samples>10</heartbeats_per_max_samples>
+            <!-- See low_watermark -->
+            <heartbeat_period>
+              <sec>0</sec>
+              <nanosec>200000000</nanosec>
+            </heartbeat_period>
+            <!-- See high_watermark -->
+            <fast_heartbeat_period>
+              <sec>0</sec>
+              <nanosec>20000000</nanosec>
+            </fast_heartbeat_period>
+            <late_joiner_heartbeat_period>
+              <sec>0</sec>
+              <nanosec>20000000</nanosec>
+            </late_joiner_heartbeat_period>
+            <max_nack_response_delay>
+              <sec>0</sec>
+              <nanosec>0</nanosec>
+            </max_nack_response_delay>
+            <!-- When the number of unacknowledged samples reaches
+                 the high_watermark, the fast_heartbeat_period is
+                 used -->
+            <high_watermark>25</high_watermark>
+            <!-- When the number of unacknowledged samples dips
+                 below the low_watermark, the heartbeat_period is
+                 used -->
+            <low_watermark>10</low_watermark>
+            <!-- The maximum number of heartbeat retries before a
+                 remote DataReader is marked as inactive -->
+            <max_heartbeat_retries>500</max_heartbeat_retries>
+          </rtps_reliable_writer>
+        </protocol>
+      </datawriter_qos>
+
+      <datareader_qos>
+        <resource_limits>
+          <max_samples>80</max_samples>
+        </resource_limits>
+        <reliability>
+          <kind>RELIABLE_RELIABILITY_QOS</kind>
+        </reliability>
+        <protocol>
+          <rtps_reliable_reader>
+            <min_heartbeat_response_delay>
+              <sec>0</sec>
+              <nanosec>0</nanosec>
+            </min_heartbeat_response_delay>
+            <max_heartbeat_response_delay>
+              <sec>0</sec>
+              <nanosec>0</nanosec>
+            </max_heartbeat_response_delay>
+          </rtps_reliable_reader>
+        </protocol>
+        <history>
+          <kind>KEEP_ALL_HISTORY_QOS</kind>
+        </history>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- Like the Generic.StrictReliable profile, this profile ensures
+         in-order delivery of samples. However, new data can overwrite
+         data that has not been acknowledged yet by the reader, therefore  
+         causing possible sample loss. -->
+    <qos_profile name="Generic.KeepLastReliable" base_name="Generic.StrictReliable">
+      <datawriter_qos>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+        </history>
+        <protocol>
+          <rtps_reliable_writer>
+            <!-- Do not block because of the send_window -->
+            <max_send_window_size>LENGTH_UNLIMITED</max_send_window_size>
+            <min_send_window_size>LENGTH_UNLIMITED</min_send_window_size>
+          </rtps_reliable_writer>
+        </protocol>
+      </datawriter_qos>
+
+      <datareader_qos>
+        <resource_limits>
+          <max_samples>LENGTH_UNLIMITED</max_samples>
+        </resource_limits>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+        </history>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- This profile enables best-effort communication. No effort or
+         resources are spent to track whether or not sent samples are
+         received. Minimal resources are used. This is the most 
+         deterministic method of sending data since there is no 
+         indeterministic delay that can be introduced by resending data. 
+         Data samples may be lost. This setting is good for periodic
+         data -->
+    <qos_profile name="Generic.BestEffort" base_name="BuiltinQosLib::Generic.Common">
+      <datawriter_qos>
+        <reliability>
+          <kind>BEST_EFFORT_RELIABILITY_QOS</kind>
+        </reliability>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+          <depth>100</depth>
+        </history>
+      </datawriter_qos>
+
+      <datareader_qos>
+        <reliability>
+          <kind>BEST_EFFORT_RELIABILITY_QOS</kind>
+        </reliability>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+          <depth>100</depth>
+        </history>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- The Generic.HighThroughput profile extends the Generic.StrictReliable 
+         profile to perform additional, fine-grained performance tuning 
+         specific to applications that send continuously streaming data. The 
+         parameters specified here add to and/or override the parameters 
+         specified in the Generic.StrictReliable profile. -->
+    <qos_profile name="Generic.StrictReliable.HighThroughput" base_name="Generic.StrictReliable">
+      <datawriter_qos>
+        <protocol>
+          <rtps_reliable_writer>
+            <!-- Speed up the heartbeat rate -->
+            <heartbeat_period>
+              <!-- 10 milliseconds: -->
+              <sec>0</sec>
+              <nanosec>10000000</nanosec>
+            </heartbeat_period>
+            <!-- Speed up the heartbeat rate -->
+            <fast_heartbeat_period>
+              <!-- 1 millisecond: -->
+              <sec>0</sec>
+              <nanosec>1000000</nanosec>
+            </fast_heartbeat_period>
+            <!-- Speed up the heartbeat rate -->
+            <late_joiner_heartbeat_period>
+              <!-- 1 millisecond: -->
+              <sec>0</sec>
+              <nanosec>1000000</nanosec>
+            </late_joiner_heartbeat_period>
+
+            <!-- The heartbeat rate is faster, so allow more time for readers 
+                 to respond before they are deactivated. -->
+            <max_heartbeat_retries>1000</max_heartbeat_retries>
+          </rtps_reliable_writer>
+        </protocol>
+
+        <!-- When sending very many small data samples, the efficiency of
+             the network can be increased by batching multiple samples together
+             in a single protocol-level message (usually corresponding to a
+             single network datagram). Batching can offer very substantial
+             throughput gains, but often at the expense of latency, although in
+             some configurations, the latency penalty can be very small or even
+             zero - even negative. -->
+        <batch>
+          <enable>true</enable>
+
+          <!-- Batches can be "flushed" to the network based on a maximum size. 
+               This size can be based on the total number of bytes in the 
+               accumulated data samples and/or the number of samples. Whenever
+               the first of these limits is reached, the batch will be 
+               flushed. -->
+          <!-- 30 KB -->
+          <max_data_bytes>30720</max_data_bytes>
+          <max_samples>LENGTH_UNLIMITED</max_samples>
+
+          <!-- Batches can be flushed to the network based on an elapsed 
+               time -->
+          <max_flush_delay>
+            <sec>0</sec>
+            <nanosec>10000000</nanosec>
+          </max_flush_delay>
+        </batch>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- The Generic.LowLatency profile extends the Generic.StrictReliable 
+         profile to perform additional, fine-grained performance tuning
+         specific to applications that send continuously streaming data. The
+         parameters specified here add to and/or override the parameters
+         specified in the Generic.StrictReliable profile. -->
+    <qos_profile name="Generic.StrictReliable.LowLatency" base_name="Generic.StrictReliable">
+      <datareader_qos>
+        <protocol>
+          <rtps_reliable_reader>
+            <heartbeat_suppression_duration>
+              <sec>0</sec>
+              <nanosec>0</nanosec>
+            </heartbeat_suppression_duration>
+          </rtps_reliable_reader>
+        </protocol>
+      </datareader_qos>
+
+      <datawriter_qos>
+        <protocol>
+          <rtps_reliable_writer>
+            <!-- Send a piggyback heartbeat per sample -->
+            <heartbeats_per_max_samples>40</heartbeats_per_max_samples>
+          </rtps_reliable_writer>
+        </protocol>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- A common Participant base profile that configures a fast, a medium,
+         and a slow flow controller that can each be used to throttle 
+         application data flow at different rates. -->
+    <qos_profile name="Generic.Participant.LargeData" base_name="Generic.StrictReliable">
+      <participant_qos>
+        <property>
+          <value>
+            <!-- The next set of parameters define three flow controllers that can be selected  
+                 for individual DataWriters. The configurations differ only in the amount of 
+                 tokens added and allowed per period 
+                 (128, 32 and 8) for fast, medium, and slow, 
+                 respectively. Using 8Kb tokens, a 1M sample will take 128 
+                 tokens. -->
+
+            <!-- Fast: is 100 MB/sec (838 Mb/sec) flow controller -->
+            <element>
+              <name>dds.flow_controller.token_bucket.fast_flow.token_bucket.max_tokens</name>
+              <value>128</value>
+            </element>
+            <element>
+              <name>dds.flow_controller.token_bucket.fast_flow.token_bucket.tokens_added_per_period</name>
+              <value>128</value>
+            </element>
+            <element>
+              <name>dds.flow_controller.token_bucket.fast_flow.token_bucket.bytes_per_token</name>
+              <value>8192</value>
+            </element>
+            <element>
+              <name>dds.flow_controller.token_bucket.fast_flow.token_bucket.period.sec</name>
+              <value>0</value>
+            </element>
+            <element>
+              <name>dds.flow_controller.token_bucket.fast_flow.token_bucket.period.nanosec</name>
+              <value>10000000</value>
+            </element>
+            <!-- medium: 25 MB/sec (209 Mb/sec) flow controller -->
+            <element>
+              <name>dds.flow_controller.token_bucket.medium_flow.token_bucket.max_tokens</name>
+              <value>32</value>
+            </element>
+            <element>
+              <name>dds.flow_controller.token_bucket.medium_flow.token_bucket.tokens_added_per_period</name>
+              <value>32</value>
+            </element>
+            <element>
+              <name>dds.flow_controller.token_bucket.medium_flow.token_bucket.bytes_per_token</name>
+              <value>8192</value>
+            </element>
+            <element>
+              <name>dds.flow_controller.token_bucket.medium_flow.token_bucket.period.sec</name>
+              <value>0</value>
+            </element>
+            <element>
+              <name>dds.flow_controller.token_bucket.medium_flow.token_bucket.period.nanosec</name>
+              <value>10000000</value>
+            </element>
+            <!-- slow: 6.25 MB/sec (52 Mb/sec) flow controller -->
+            <element>
+              <name>dds.flow_controller.token_bucket.slow_flow.token_bucket.max_tokens</name>
+              <value>8</value>
+            </element>
+            <element>
+              <name>dds.flow_controller.token_bucket.slow_flow.token_bucket.tokens_added_per_period</name>
+              <value>8</value>
+            </element>
+            <element>
+              <name>dds.flow_controller.token_bucket.slow_flow.token_bucket.bytes_per_token</name>
+              <value>8192</value>
+            </element>
+            <element>
+              <name>dds.flow_controller.token_bucket.slow_flow.token_bucket.period.sec</name>
+              <value>0</value>
+            </element>
+            <element>
+              <name>dds.flow_controller.token_bucket.slow_flow.token_bucket.period.nanosec</name>
+              <value>10000000</value>
+            </element>
+          </value>
+        </property>
+      </participant_qos>
+    </qos_profile>
+
+
+    <!-- A common base Participant profile to configure participants to both 
+         handle large data and use the monitoring library. -->
+    <qos_profile name="Generic.Participant.LargeData.Monitoring" base_name="Generic.Participant.LargeData">
+        <participant_qos>
+          <resource_limits>
+              <participant_property_string_max_length>4096</participant_property_string_max_length>
+              <participant_property_list_max_length>45</participant_property_list_max_length>
+              <!-- Some of the monitoring topics have large type objects -->
+              <type_object_max_serialized_length>35840</type_object_max_serialized_length>
+          </resource_limits>
+          <property>
+            <value>
+              <!-- Monitoring can be enabled via XML with dynamic linking. If you
+                   have a C or C++ application that is statically linked, please 
+                   refer to the RTI Monitoring Library Getting Started Guide for 
+                   instructions on how to enable monitoring.-->
+              <element>
+                <name>rti.monitor.library</name>
+                <value>rtimonitoring</value>
+              </element>
+              <element>
+                <name>rti.monitor.create_function</name>
+                <value>RTIDefaultMonitor_create</value>
+              </element>
+              <element>
+                <name>rti.monitor.config.writer_pool_buffer_max_size</name>
+                <value>4096</value>
+              </element>
+            </value>
+          </property>
+        </participant_qos>
+    </qos_profile>
+
+    <!-- This profile extends the Generic.Participant.LargeData profile to 
+         handle sending large samples. The profile optimizes the memory usage
+         per sample within the middleware but it does not do any flow control.
+         You can use this profile directly, which enables asynchronous 
+         publication with the default flow controller (i.e. no flow control) or
+         use one of the three profiles below (Generic.StrictReliable.LargeData.*Flow),
+         which use this profile as a common base profile. Each of these three 
+         profiles use one of the three flow controllers defined in 
+         Generic.Participant.LargeData in order to throttle application data
+         flow. -->
+    <qos_profile name="Generic.StrictReliable.LargeData" base_name="Generic.Participant.LargeData">
+      <datawriter_qos>
+        <publish_mode>
+          <kind>ASYNCHRONOUS_PUBLISH_MODE_QOS</kind>
+        </publish_mode>
+        <resource_limits>
+          <!-- Initially, only allocate 1 sample because the samples
+               are large -->
+          <initial_samples>1</initial_samples>
+        </resource_limits>
+        <protocol>
+          <rtps_reliable_writer>
+            <max_send_window_size>10</max_send_window_size>
+            <min_send_window_size>10</min_send_window_size>
+            <heartbeats_per_max_samples>10</heartbeats_per_max_samples>
+          </rtps_reliable_writer>
+        </protocol>
+        <property>
+          <value>
+            <!-- The next setting is used to force dynamic memory allocation 
+                 for samples with a serialized size of larger than 32K. Without
+                 setting pool_buffer_max_size, all memory would be obtained 
+                 from a pre-allocated pool, which would greatly increase the 
+                 memory usage in an application that sends large data. -->
+            <element>
+              <name>dds.data_writer.history.memory_manager.fast_pool.pool_buffer_max_size</name>
+              <value>32768</value>
+            </element>
+            <!-- The min_size property configures the minimum size of the 
+                 serialization buffer. 
+                 (only supported when using the JAVA API) -->
+            <element>
+              <name>dds.data_writer.history.memory_manager.java_stream.min_size</name>
+              <value>1000000</value>
+            </element>
+            <!-- Setting the trim_to_size property to true means that the 
+                 serialization buffer will be reallocated with each new sample
+                 in order to fit the sample's serialized size.  
+                 (only supported when using the JAVA API) -->
+            <element>
+              <name>dds.data_writer.history.memory_manager.java_stream.trim_to_size</name>
+              <value>true</value>
+            </element>
+          </value>
+        </property>
+      </datawriter_qos>
+
+      <datareader_qos>
+        <resource_limits>
+          <initial_samples>1</initial_samples>
+          <!-- We limit max_samples on the reader so that if the writer is
+               publishing samples faster than the reader is taking them, then 
+               the reader will start sending NACKs for samples received after 
+               the number of samples in its queue reaches max_samples. This 
+               behavior will put pressure on the writer to throttle back its 
+               publishing speed. -->
+          <max_samples>20</max_samples>
+        </resource_limits>
+        <reader_resource_limits>
+          <!-- Determines whether the DataReader pre-allocates storage for 
+               storing fragmented samples. This setting can be used to limit
+               up-front memory allocation costs in applications that deal with 
+               large data --> 
+          <dynamically_allocate_fragmented_samples>true</dynamically_allocate_fragmented_samples>
+        </reader_resource_limits>
+        <property>
+          <value>
+            <element>
+              <name>dds.data_reader.history.memory_manager.java_stream.min_size</name>
+              <value>1000000</value>
+            </element>
+            <element>
+              <name>dds.data_reader.history.memory_manager.java_stream.trim_to_size</name>
+              <value>true</value>
+            </element>
+          </value>
+        </property>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- This profile is similar to the Generic.KeepLastReliable profile, but 
+         inherits from Generic.StrictReliable.LargeData in order to handle 
+         sending large data. You can use this profile directly, which enables
+         the default flow controller (i.e., NO flow control) or you can choose one of the
+         three profiles below (Generic.KeepLastReliable.LargeData.*Flow) which use 
+         this profile as a common base profile. Each of these three profiles use
+         one of the three flow controllers defined in 
+         Generic.Participant.LargeData in order to throttle application data 
+         flow. -->
+    <qos_profile name="Generic.KeepLastReliable.LargeData" base_name="Generic.StrictReliable.LargeData">
+      <datawriter_qos>
+        <resource_limits>
+          <max_samples>LENGTH_UNLIMITED</max_samples>
+        </resource_limits>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+        </history>
+      </datawriter_qos>
+
+      <datareader_qos>
+        <resource_limits>
+          <max_samples>LENGTH_UNLIMITED</max_samples>
+        </resource_limits>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+        </history>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- Strictly reliable communication for large data with a 100 MB/sec
+         (838 Mb/sec) flow controller -->
+    <qos_profile name="Generic.StrictReliable.LargeData.FastFlow" base_name="Generic.StrictReliable.LargeData">
+      <datawriter_qos>
+        <publish_mode>
+          <flow_controller_name>dds.flow_controller.token_bucket.fast_flow</flow_controller_name>
+        </publish_mode>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- Strictly reliable communication for large data with a 25 MB/sec
+         (209 Mb/sec) flow controller -->
+    <qos_profile name="Generic.StrictReliable.LargeData.MediumFlow" base_name="Generic.StrictReliable.LargeData">
+      <datawriter_qos>
+        <publish_mode>
+          <flow_controller_name>dds.flow_controller.token_bucket.medium_flow</flow_controller_name>
+        </publish_mode>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- Strictly reliable communication for large data with a 6.25 MB/sec
+         (52 Mb/sec) flow controller -->
+    <qos_profile name="Generic.StrictReliable.LargeData.SlowFlow" base_name="Generic.StrictReliable.LargeData">
+      <datawriter_qos>
+        <publish_mode>
+          <flow_controller_name>dds.flow_controller.token_bucket.slow_flow</flow_controller_name>
+        </publish_mode>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- Keep-last reliable communication for large data with a 100 MB/sec
+         (838 Mb/sec) flow controller -->
+    <qos_profile name="Generic.KeepLastReliable.LargeData.FastFlow" base_name="Generic.KeepLastReliable.LargeData">
+      <datawriter_qos>
+        <publish_mode>
+          <flow_controller_name>dds.flow_controller.token_bucket.fast_flow</flow_controller_name>
+        </publish_mode>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- Keep-last reliable communication for large data with a 25 MB/sec
+         (209 Mb/sec) flow controller -->
+    <qos_profile name="Generic.KeepLastReliable.LargeData.MediumFlow" base_name="Generic.KeepLastReliable.LargeData">
+      <datawriter_qos>
+        <publish_mode>
+          <flow_controller_name>dds.flow_controller.token_bucket.medium_flow</flow_controller_name>
+        </publish_mode>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- Keep-last reliable communication for large data with a 6.25 MB/sec
+         (52 Mb/sec) flow controller -->
+    <qos_profile name="Generic.KeepLastReliable.LargeData.SlowFlow" base_name="Generic.KeepLastReliable.LargeData">
+      <datawriter_qos>
+        <publish_mode>
+          <flow_controller_name>dds.flow_controller.token_bucket.slow_flow</flow_controller_name>
+        </publish_mode>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- This profile extends the Generic.KeepLastReliable profile, but
+         persists the samples of a DataWriter as long as the entity exists
+         in order to deliver them to late-joining DataReaders -->
+    <qos_profile name="Generic.KeepLastReliable.TransientLocal" base_name="Generic.KeepLastReliable">
+      <datareader_qos>
+        <durability>
+          <kind>TRANSIENT_LOCAL_DURABILITY_QOS</kind>
+        </durability>
+      </datareader_qos>
+
+      <datawriter_qos>
+        <durability>
+          <kind>TRANSIENT_LOCAL_DURABILITY_QOS</kind>
+        </durability>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- This profile extends the Generic.KeepLastReliable profile, but
+         persists samples using RTI Persistence Service in order to deliver
+         them to late-joining DataReaders -->
+    <qos_profile name="Generic.KeepLastReliable.Transient" base_name="Generic.KeepLastReliable.TransientLocal">
+      <datareader_qos>
+        <durability>
+          <kind>TRANSIENT_DURABILITY_QOS</kind>
+        </durability>
+      </datareader_qos>
+
+      <datawriter_qos>
+        <durability>
+          <!-- Transient durability requires the use of the
+               Persistence Service -->
+          <kind>TRANSIENT_DURABILITY_QOS</kind>
+        </durability>
+        <durability_service>
+          <!-- The DurabilityServiceQosPolicy is used to
+               configure how the persistence service manages its
+               memory and local cache. When using Transient durability, the
+               persistence service maintains an in-memory cache of
+               stored data. These values, therefore, represent memory
+               usage.  -->
+          <history_kind>KEEP_LAST_HISTORY_QOS</history_kind>
+          <history_depth>1</history_depth>
+          <max_samples>LENGTH_UNLIMITED</max_samples>
+          <max_instances>LENGTH_UNLIMITED</max_instances>
+          <max_samples_per_instance>LENGTH_UNLIMITED</max_samples_per_instance>
+        </durability_service>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- This profile extends the Generic.KeepLastReliable profile, but
+         persists samples in permanent storage, such as a disk, using
+         RTI Persistence Service to deliver them to late-joining DataReaders -->
+    <qos_profile name="Generic.KeepLastReliable.Persistent" base_name="Generic.KeepLastReliable.Transient">
+      <datareader_qos>
+        <durability>
+          <kind>PERSISTENT_DURABILITY_QOS</kind>
+        </durability>
+      </datareader_qos>
+
+      <datawriter_qos>
+        <durability>
+          <kind>PERSISTENT_DURABILITY_QOS</kind>
+        </durability>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- This profile enables the Turbo Mode batching and Auto Throttle 
+         experimental features. Aside from the properties that enable these
+         features (which are all false by default), all the values are set to their 
+         defaults and are shown here for reference. Turbo Mode batching adjusts
+         the maximum number of bytes of a batch, based on how frequently samples
+         are being written. Auto Throttle auto-adjusts the speed at which a 
+         writer will write samples, based on the number of unacknowledged 
+         samples in its queue.
+          
+         These features are designed to auto-adjust the publishing behavior 
+         within a system to achieve the best possible performance 
+         with regards to throughput and latency. -->
+    <qos_profile name="Generic.AutoTuning" base_name="BuiltinQosLibExp::Generic.StrictReliable.HighThroughput">
+      <participant_qos>
+          <property>
+            <value>
+              <element>
+                <name>dds.domain_participant.auto_throttle.enable</name>
+                <value>true</value>
+              </element>
+            </value>
+          </property>
+      </participant_qos>
+      <datawriter_qos>
+        <batch>
+          <enable>false</enable>
+        </batch>
+        <protocol>
+          <rtps_reliable_writer>
+            <max_send_window_size>100</max_send_window_size>
+          </rtps_reliable_writer>
+        </protocol>
+        <property>
+          <value>
+            <element>
+              <name>dds.data_writer.enable_turbo_mode</name>
+              <value>true</value>
+            </element>
+            <element>
+              <name>dds.data_writer.auto_throttle.enable</name>
+              <value>true</value>
+            </element>
+            <element>
+              <name>dds.data_writer.auto_throttle.spin_update_sample_count</name>
+              <value>1</value>
+            </element>
+            <element>
+              <name>dds.data_writer.auto_throttle.spin_increment</name>
+              <value>5</value>
+            </element>
+            <element>
+              <name>dds.data_writer.auto_throttle.spin_decrement</name>
+              <value>1</value>
+            </element>
+            <element>
+              <name>ddds.data_writer.auto_throttle.spin_low_threshold</name>
+              <value>20</value>
+            </element>
+            <element>
+              <name>dds.data_writer.auto_throttle.spin_high_threshold</name>
+              <value>40</value>
+            </element>
+            <element>
+              <name>dds.data_writer.auto_throttle.slow_throughput_detection_enable</name>
+              <value>true</value>
+            </element>
+            <element>
+              <name>dds.data_writer.auto_throttle.slow_throughput_detection_delta</name>
+              <value>500</value>
+            </element>
+          </value>
+        </property>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- This profile is intended to be used for applications that expect
+         periodic data such as sensor data. The deadline that is set in
+         this profile can be used to detect when DataWriters are not
+         publishing data with the expected periodicity. -->
+    <qos_profile name="Pattern.PeriodicData" base_name="Generic.BestEffort">
+      <datawriter_qos>
+        <deadline>
+          <period>
+            <sec>4</sec>
+            <nanosec>0</nanosec>
+          </period>
+        </deadline>
+      </datawriter_qos>
+
+      <datareader_qos>
+        <deadline>
+          <period>
+            <sec>10</sec>
+            <nanosec>0</nanosec>
+          </period>
+        </deadline>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- The data sent in streaming applications is commonly periodic and
+         therefore this profile simply inherits from the 
+         Pattern.PeriodicData profile. Notice that with this profile the
+         application may lose data, which may be acceptable in use cases 
+         such as video conferencing. -->
+    <qos_profile name="Pattern.Streaming" base_name="Pattern.PeriodicData"/>
+
+    <!-- Sometimes streaming applications require reliable communication
+         while still tolerating some data loss. In this case, we inherit
+         from the Generic.KeepLastReliable profile and increase the HistoryQosPolicy's
+         depth to reduce the probability of losing samples -->
+    <qos_profile name="Pattern.ReliableStreaming" base_name="Generic.KeepLastReliable">
+      <datawriter_qos>
+        <history>
+          <depth>100</depth>
+        </history>
+      </datawriter_qos>
+
+      <datareader_qos>
+        <history>
+          <depth>100</depth>
+        </history>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- This profile can be used by applications in which samples represent
+         events such as button pushes or alerts. When events are triggered,
+         the system should almost always do something, meaning that we 
+         don't want to lose the event and therefore require strictly reliable
+         communication. Therefore, we inherit from the 
+         Generic.StrictReliable profile. Since events and alerts are 
+         critical and non-periodic data, it is important to detect 
+         situations in which communication between a DataWriter 
+         and DataReader is broken, this is why this profile sets the 
+         LivelinessQosPolicy. If the DataWriter does not assert its 
+         liveliness in a timely manner, the DataReader will report loss
+         of liveliness to the application. -->
+    <qos_profile name="Pattern.Event" base_name="Generic.StrictReliable">
+      <datawriter_qos>
+        <liveliness>
+          <lease_duration>
+            <sec>4</sec>
+            <nanosec>0</nanosec>
+          </lease_duration>
+        </liveliness>
+      </datawriter_qos>
+
+      <datareader_qos>
+        <liveliness>
+          <lease_duration>
+            <sec>10</sec>
+            <nanosec>0</nanosec>
+          </lease_duration>
+        </liveliness>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- An alarm is a type of event; therefore this profile simply inherits from
+         Pattern.Event -->
+    <qos_profile name="Pattern.AlarmEvent" base_name="Pattern.Event"/>
+
+    <!-- This profile can be used by applications in which samples represent
+         state variables whose values remain valid as long as they doesn't
+         explicitly change. State variables typically do not change 
+         periodically. State variables and their values should also be 
+         available to applications that appear after the value originally 
+         changed because it is unreasonable to have to wait until the next
+         change of state, which may be indeterminate.
+     
+         Whether to use this profile or Pattern.PeriodicData can often
+         be an application choice. For example, if a DataWriter is 
+         publishing temperature sensor data, it could use the 
+         Pattern.PeriodicData profile and publish the data at a fixed rate
+         or it could use the Pattern.Status profile and only publish the 
+         temperature when it changes more than 1 degree. -->
+    <qos_profile name="Pattern.Status" base_name="Generic.KeepLastReliable.TransientLocal"/>
+
+    <!-- An alarm status is a type of status; therefore this profile simply inherits
+         from Pattern.Status -->
+    <qos_profile name="Pattern.AlarmStatus" base_name="Pattern.Status"/>
+
+    <!-- With this profile, a DataWriter will keep in its queue the last 
+         value that was published for each sample instance. Late-joining 
+         DataReaders will get that value when they join the system. This 
+         profile inherits from Generic.KeepLastReliable.TransientLocal 
+         because the use case requires delivery to late-joiners. -->
+    <qos_profile name="Pattern.LastValueCache" base_name="Generic.KeepLastReliable.TransientLocal"/>
+
+  </qos_library>
+</dds>
